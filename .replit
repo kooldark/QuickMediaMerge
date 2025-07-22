@@ -1,0 +1,36 @@
+modules = ["nodejs-20"]
+
+[nix]
+channel = "stable-24_05"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Electron App"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "electron_app"
+
+[[workflows.workflow]]
+name = "Electron App"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm init -y && npm install electron fluent-ffmpeg ffmpeg-static ffprobe-static && npm start || electron main.js"
+
+[[workflows.workflow]]
+name = "electron_app"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm init -y && npm install electron fluent-ffmpeg ffmpeg-static ffprobe-static && npm start"
