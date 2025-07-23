@@ -631,6 +631,407 @@ body {
   background: var(--text-secondary);
 }
 
+/* Video Editor Modal */
+.video-editor-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1500;
+  padding: 20px;
+}
+
+.video-editor-content {
+  background: var(--surface);
+  border-radius: var(--radius-large);
+  width: 90vw;
+  max-width: 800px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: var(--shadow-elevated);
+  position: relative;
+}
+
+.video-editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 25px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-variant);
+}
+
+.video-editor-header h3 {
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+.video-editor-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.editor-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-variant);
+}
+
+.tab-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 15px 10px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  border-bottom: 3px solid transparent;
+}
+
+.tab-btn:hover {
+  background: var(--surface);
+  color: var(--text-primary);
+}
+
+.tab-btn.active {
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+  background: var(--surface);
+}
+
+.tab-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tab-btn i {
+  font-size: 16px;
+}
+
+.editor-content {
+  flex: 1;
+  padding: 25px;
+  overflow-y: auto;
+}
+
+.editor-section h4 {
+  margin-bottom: 20px;
+  color: var(--text-primary);
+  font-size: 18px;
+}
+
+.control-group {
+  margin-bottom: 25px;
+}
+
+.control-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* Speed Controls */
+.speed-slider {
+  width: 100%;
+  margin: 10px 0;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--border);
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.speed-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  cursor: pointer;
+}
+
+.speed-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  cursor: pointer;
+  border: none;
+}
+
+.speed-presets {
+  display: flex;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.preset-btn {
+  padding: 8px 16px;
+  background: var(--surface-variant);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+}
+
+.preset-btn:hover {
+  background: var(--border);
+}
+
+.preset-btn.active {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+/* Time Controls */
+.time-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.time-input-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.time-input {
+  width: 120px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 14px;
+}
+
+.time-display {
+  font-family: monospace;
+  font-size: 14px;
+  color: var(--text-secondary);
+  background: var(--surface-variant);
+  padding: 4px 8px;
+  border-radius: var(--radius);
+}
+
+/* Format Select */
+.format-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 14px;
+  background: var(--surface);
+  color: var(--text-primary);
+}
+
+/* Quality Options */
+.quality-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.radio-option:hover {
+  background: var(--surface-variant);
+}
+
+.radio-option input[type="radio"] {
+  margin: 0;
+}
+
+/* Rotation Options */
+.rotation-options {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.rotation-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 15px;
+  background: var(--surface-variant);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.rotation-btn:hover {
+  background: var(--border);
+}
+
+.rotation-btn.active {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.rotation-btn i {
+  font-size: 18px;
+}
+
+/* Process Button */
+.process-btn {
+  width: 100%;
+  padding: 15px 20px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.process-btn:hover:not(:disabled) {
+  background: var(--primary-hover);
+}
+
+.process-btn:disabled {
+  background: var(--border);
+  color: var(--text-secondary);
+  cursor: not-allowed;
+}
+
+/* Processing Overlay */
+.processing-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.processing-overlay .progress-container {
+  width: 300px;
+  text-align: center;
+}
+
+.processing-overlay .progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.processing-overlay .progress-fill {
+  height: 100%;
+  background: var(--primary-color);
+  transition: width 0.3s ease;
+  border-radius: 4px;
+}
+
+.processing-overlay .progress-text {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* Edit Button in File List */
+.edit-btn {
+  background: none;
+  border: none;
+  padding: 8px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.edit-btn:hover {
+  background: var(--surface-variant);
+  color: var(--primary-color);
+}
+
+/* Responsive Design for Editor */
+@media (max-width: 768px) {
+  .video-editor-content {
+    width: 95vw;
+    max-height: 95vh;
+  }
+  
+  .editor-tabs {
+    flex-wrap: wrap;
+  }
+  
+  .tab-btn {
+    min-width: 60px;
+    font-size: 12px;
+  }
+  
+  .time-controls {
+    gap: 10px;
+  }
+  
+  .time-input-group {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  
+  .rotation-options {
+    flex-direction: column;
+  }
+  
+  .speed-presets {
+    flex-wrap: wrap;
+  }
+}
+
 /* Animation for loading states */
 @keyframes spin {
   from { transform: rotate(0deg); }

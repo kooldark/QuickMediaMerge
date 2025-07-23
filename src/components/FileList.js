@@ -1,6 +1,6 @@
 const { useState } = React;
 
-function FileList({ files, onFileRemove, onFileReorder, onPreview }) {
+function FileList({ files, onFileRemove, onFileReorder, onPreview, onEdit }) {
   const [draggedIndex, setDraggedIndex] = useState(null);
 
   const handleDragStart = (e, index) => {
@@ -90,6 +90,15 @@ function FileList({ files, onFileRemove, onFileReorder, onPreview }) {
               >
                 <i className="fas fa-eye"></i>
               </button>
+              {getFileIcon(file.name).includes('video') && onEdit && (
+                <button 
+                  className="edit-btn"
+                  onClick={() => onEdit(file)}
+                  title="Edit Video"
+                >
+                  <i className="fas fa-edit"></i>
+                </button>
+              )}
               <button 
                 className="remove-btn"
                 onClick={() => onFileRemove(index)}

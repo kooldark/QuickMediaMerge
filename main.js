@@ -164,6 +164,168 @@ ipcMain.handle('merge-images', async (event, files, outputPath, duration = 2) =>
   });
 });
 
+// Speed adjustment for videos
+ipcMain.handle('change-video-speed', async (event, filePath, outputPath, speed) => {
+  return new Promise((resolve, reject) => {
+    const outputFile = path.join(outputPath, `speed_${speed}x_${Date.now()}.mp4`);
+    
+    // Calculate audio and video filters
+    const videoFilter = `setpts=${1/speed}*PTS`;
+    const audioFilter = `atempo=${speed}`;
+    
+    const command = ffmpeg(filePath)
+      .videoFilters(videoFilter)
+      .audioFilters(audioFilter)
+      .output(outputFile);
+    
+    command.on('progress', (progress) => {
+      mainWindow.webContents.send('processing-progress', progress.percent || 0);
+    });
+    
+    command.on('end', () => {
+      resolve({ success: true, outputFile });
+    });
+    
+    command.on('error', (err) => {
+      reject(err);
+    });
+    
+    command.run();
+  });
+});
+
+// Trim video (cut start and end)
+ipcMain.handle('trim-video', async (event, filePath, outputPath, startTime, duration) => {
+  return new Promise((resolve, reject) => {
+    const outputFile = path.join(outputPath, `trimmed_${Date.now()}.mp4`);
+    
+    const command = ffmpeg(filePath)
+      .seekInput(startTime)
+      .duration(duration)
+      .outputOptions(['-c', 'copy']) // Copy streams for faster processing
+      .output(outputFile);
+    
+    command.on('progress', (progress) => {
+      mainWindow.webContents.send('processing-progress', progress.percent || 0);
+    });
+    
+    command.on('end', () => {
+      resolve({ success: true, outputFile });
+    });
+    
+    command.on('error', (err) => {
+      reject(err);
+    });
+    
+    command.run();
+  });
+});
+
+// Extract audio from video
+ipcMain.handle('extract-audio', async (event, filePath, outputPath, format = 'mp3') => {
+  return new Promise((resolve, reject) => {
+    const outputFile = path.join(outputPath, `audio_${Date.now()}.${format}`);
+    
+    const command = ffmpeg(filePath)
+      .noVideo()
+      .audioCodec(format === 'mp3' ? 'libmp3lame' : 'aac')
+      .output(outputFile);
+    
+    command.on('progress', (progress) => {
+      mainWindow.webContents.send('processing-progress', progress.percent || 0);
+    });
+    
+    command.on('end', () => {
+      resolve({ success: true, outputFile });
+    });
+    
+    command.on('error', (err) => {
+      reject(err);
+    });
+    
+    command.run();
+  });
+});
+
+// Compress video
+ipcMain.handle('compress-video', async (event, filePath, outputPath, quality = 'medium') => {
+  return new Promise((resolve, reject) => {
+    const outputFile = path.join(outputPath, `compressed_${Date.now()}.mp4`);
+    
+    // Quality settings
+    const qualitySettings = {
+      low: { crf: 28, preset: 'fast' },
+      medium: { crf: 23, preset: 'medium' },
+      high: { crf: 18, preset: 'slow' }
+    };
+    
+    const settings = qualitySettings[quality] || qualitySettings.medium;
+    
+    const command = ffmpeg(filePath)
+      .videoCodec('libx264')
+      .audioCodec('aac')
+      .outputOptions([
+        `-crf ${settings.crf}`,
+        `-preset ${settings.preset}`,
+        '-movflags +faststart'
+      ])
+      .output(outputFile);
+    
+    command.on('progress', (progress) => {
+      mainWindow.webContents.send('processing-progress', progress.percent || 0);
+    });
+    
+    command.on('end', () => {
+      resolve({ success: true, outputFile });
+    });
+    
+    command.on('error', (err) => {
+      reject(err);
+    });
+    
+    command.run();
+  });
+});
+
+// Rotate video
+ipcMain.handle('rotate-video', async (event, filePath, outputPath, rotation) => {
+  return new Promise((resolve, reject) => {
+    const outputFile = path.join(outputPath, `rotated_${rotation}_${Date.now()}.mp4`);
+    
+    // Rotation filters
+    const rotationFilters = {
+      90: 'transpose=1',
+      180: 'transpose=2,transpose=2',
+      270: 'transpose=2'
+    };
+    
+    const filter = rotationFilters[rotation];
+    if (!filter) {
+      reject(new Error('Invalid rotation angle. Use 90, 180, or 270.'));
+      return;
+    }
+    
+    const command = ffmpeg(filePath)
+      .videoFilters(filter)
+      .audioCodec('copy')
+      .output(outputFile);
+    
+    command.on('progress', (progress) => {
+      mainWindow.webContents.send('processing-progress', progress.percent || 0);
+    });
+    
+    command.on('end', () => {
+      resolve({ success: true, outputFile });
+    });
+    
+    command.on('error', (err) => {
+      reject(err);
+    });
+    
+    command.run();
+  });
+});
+
 ipcMain.handle('show-error', async (event, title, message) => {
   dialog.showErrorBox(title, message);
 });

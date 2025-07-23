@@ -7,6 +7,7 @@ function App() {
   const [progress, setProgress] = useState(0);
   const [imageDuration, setImageDuration] = useState(2);
   const [previewFile, setPreviewFile] = useState(null);
+  const [editingFile, setEditingFile] = useState(null);
 
   useEffect(() => {
     // Listen for progress updates
@@ -109,6 +110,16 @@ function App() {
   const clearFiles = () => {
     setFiles([]);
     setPreviewFile(null);
+    setEditingFile(null);
+  };
+
+  const handleEditFile = (file) => {
+    setEditingFile(file);
+  };
+
+  const handleProcessComplete = (result) => {
+    // Could add processed file to the list or update UI as needed
+    console.log('Process completed:', result);
   };
 
   return (
@@ -181,6 +192,7 @@ function App() {
               onFileRemove={handleFileRemove}
               onFileReorder={handleFileReorder}
               onPreview={setPreviewFile}
+              onEdit={handleEditFile}
             />
             
             {previewFile && (
@@ -192,6 +204,15 @@ function App() {
 
       {isProcessing && (
         <ProcessingModal progress={progress} />
+      )}
+
+      {editingFile && (
+        <VideoEditor
+          selectedFile={editingFile}
+          outputPath={outputPath}
+          onProcessComplete={handleProcessComplete}
+          onClose={() => setEditingFile(null)}
+        />
       )}
     </div>
   );

@@ -7,6 +7,8 @@ Quick Video Merger is a desktop application built with Electron that allows user
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+Vietnamese language preferred for interface and communication.
+Focus on fast processing without effects or filters for optimal performance.
 
 ## System Architecture
 
@@ -32,11 +34,12 @@ Preferred communication style: Simple, everyday language.
 - **Video Processing**: Manages FFmpeg operations for merging videos and converting images
 
 ### Renderer Process
-- **App.js**: Main application component managing global state
+- **App.js**: Main application component managing global state and video editor integration
 - **FileDropZone.js**: Handles drag-and-drop file operations
-- **FileList.js**: Displays and manages the list of selected files with reordering
+- **FileList.js**: Displays and manages the list of selected files with reordering and edit functionality
 - **Preview.js**: Provides file preview functionality for videos and images
 - **ProcessingModal.js**: Shows progress during video processing operations
+- **VideoEditor.js**: Advanced video editing interface with speed, trim, audio, compression, and rotation features
 
 ### Preload Script (preload.js)
 - **API Bridge**: Exposes secure APIs to the renderer process
@@ -82,7 +85,21 @@ Preferred communication style: Simple, everyday language.
 ### File Processing Architecture
 - **Video Merging**: Concatenates video files without re-encoding for speed
 - **Image Processing**: Converts image sequences to video with configurable duration
-- **Progress Tracking**: Real-time progress updates via IPC events
+- **Video Editing Features**:
+  - **Speed Control**: Adjust video playback speed from 0.25x to 4x with audio sync
+  - **Video Trimming**: Cut video segments by specifying start time and duration
+  - **Audio Extraction**: Extract audio tracks in MP3, AAC, or WAV formats
+  - **Video Compression**: Reduce file size with low/medium/high quality presets
+  - **Video Rotation**: Rotate videos 90°, 180°, or 270° for orientation correction
+- **Progress Tracking**: Real-time progress updates via IPC events for all operations
 - **Error Handling**: Comprehensive error reporting with user-friendly messages
 
-The application follows Electron security best practices with process isolation while maintaining a responsive user interface through asynchronous processing and progress feedback.
+### Recent Changes (July 2025)
+- Added comprehensive video editing toolkit with 5 core features
+- Implemented tabbed interface for different editing operations
+- Added real-time progress tracking for all video processing tasks
+- Enhanced file list with video-specific edit button for supported formats
+- Optimized FFmpeg operations for fastest processing without quality loss
+- Added Vietnamese language support and user preference documentation
+
+The application follows Electron security best practices with process isolation while maintaining a responsive user interface through asynchronous processing and progress feedback. All video operations prioritize speed over visual effects to meet user requirements for fast processing.
