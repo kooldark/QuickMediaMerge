@@ -8,6 +8,7 @@ function App() {
   const [imageDuration, setImageDuration] = useState(2);
   const [previewFile, setPreviewFile] = useState(null);
   const [editingFile, setEditingFile] = useState(null);
+  const [losslessCutFile, setLosslessCutFile] = useState(null);
 
   useEffect(() => {
     // Listen for progress updates
@@ -111,10 +112,15 @@ function App() {
     setFiles([]);
     setPreviewFile(null);
     setEditingFile(null);
+    setLosslessCutFile(null);
   };
 
   const handleEditFile = (file) => {
     setEditingFile(file);
+  };
+
+  const handleLosslessCut = (file) => {
+    setLosslessCutFile(file);
   };
 
   const handleProcessComplete = (result) => {
@@ -193,6 +199,7 @@ function App() {
               onFileReorder={handleFileReorder}
               onPreview={setPreviewFile}
               onEdit={handleEditFile}
+              onLosslessCut={handleLosslessCut}
             />
             
             {previewFile && (
@@ -212,6 +219,15 @@ function App() {
           outputPath={outputPath}
           onProcessComplete={handleProcessComplete}
           onClose={() => setEditingFile(null)}
+        />
+      )}
+
+      {losslessCutFile && (
+        <LosslessCut
+          selectedFile={losslessCutFile}
+          outputPath={outputPath}
+          onProcessComplete={handleProcessComplete}
+          onClose={() => setLosslessCutFile(null)}
         />
       )}
     </div>

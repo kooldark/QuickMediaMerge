@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Video Merger - Web Test</title>
+    <link rel="stylesheet" href="src/styles/App.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <!-- Mock Electron API for web testing -->
+    <script>
+        window.electronAPI = {
+            selectFiles: () => Promise.resolve([]),
+            selectOutputPath: () => Promise.resolve('/mock/output/path'),
+            mergeVideos: (files, outputPath, duration) => Promise.resolve({
+                success: true,
+                outputFile: '/mock/output/merged_video.mp4'
+            }),
+            convertImages: (files, outputPath, duration) => Promise.resolve({
+                success: true,
+                outputFile: '/mock/output/video_from_images.mp4'
+            }),
+            trimVideo: (file, outputPath, start, duration) => Promise.resolve({
+                success: true,
+                outputFile: '/mock/output/trimmed_video.mp4'
+            }),
+            adjustVideoSpeed: (file, outputPath, speed) => Promise.resolve({
+                success: true,
+                outputFile: '/mock/output/speed_adjusted.mp4'
+            }),
+            extractAudio: (file, outputPath, format) => Promise.resolve({
+                success: true,
+                outputFile: '/mock/output/audio.mp3'
+            }),
+            compressVideo: (file, outputPath, quality) => Promise.resolve({
+                success: true,
+                outputFile: '/mock/output/compressed.mp4'
+            }),
+            rotateVideo: (file, outputPath, angle) => Promise.resolve({
+                success: true,
+                outputFile: '/mock/output/rotated.mp4'
+            }),
+            onProcessingProgress: (callback) => {
+                // Mock progress updates
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 10;
+                    callback(progress);
+                    if (progress >= 100) clearInterval(interval);
+                }, 200);
+            },
+            removeAllListeners: () => {},
+            showError: (title, message) => {
+                alert(`Error: ${title}\n${message}`);
+                return Promise.resolve();
+            },
+            showSuccess: (title, message) => {
+                alert(`Success: ${title}\n${message}`);
+                return Promise.resolve();
+            }
+        };
+    </script>
+    
+    <!-- Load all components -->
+    <script type="text/babel" src="src/components/FileDropZone.js"></script>
+    <script type="text/babel" src="src/components/FileList.js"></script>
+    <script type="text/babel" src="src/components/Preview.js"></script>
+    <script type="text/babel" src="src/components/ProcessingModal.js"></script>
+    <script type="text/babel" src="src/components/VideoEditor.js"></script>
+    <script type="text/babel" src="src/components/VideoTimeline.js"></script>
+    <script type="text/babel" src="src/components/LosslessCut.js"></script>
+    <script type="text/babel" src="src/App.js"></script>
+    
+    <!-- Initialize App -->
+    <script type="text/babel">
+        const { createRoot } = ReactDOM;
+        const root = createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

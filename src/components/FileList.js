@@ -1,6 +1,6 @@
 const { useState } = React;
 
-function FileList({ files, onFileRemove, onFileReorder, onPreview, onEdit }) {
+function FileList({ files, onFileRemove, onFileReorder, onPreview, onEdit, onLosslessCut }) {
   const [draggedIndex, setDraggedIndex] = useState(null);
 
   const handleDragStart = (e, index) => {
@@ -97,6 +97,15 @@ function FileList({ files, onFileRemove, onFileReorder, onPreview, onEdit }) {
                   title="Edit Video"
                 >
                   <i className="fas fa-edit"></i>
+                </button>
+              )}
+              {getFileIcon(file.name).includes('video') && onLosslessCut && (
+                <button 
+                  className="losslesscut-btn"
+                  onClick={() => onLosslessCut(file)}
+                  title="LosslessCut"
+                >
+                  <i className="fas fa-cut"></i>
                 </button>
               )}
               <button 

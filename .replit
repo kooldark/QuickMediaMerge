@@ -1,8 +1,8 @@
-modules = ["nodejs-20"]
+modules = ["nodejs-20", "python-3.11"]
 
 [nix]
 channel = "stable-24_05"
-packages = ["xvfb-run", "gtk3", "glib"]
+packages = ["xvfb-run", "gtk3", "glib", "nspr", "nss"]
 
 [workflows]
 runButton = "Project"
@@ -23,6 +23,10 @@ args = "electron_app"
 [[workflows.workflow.tasks]]
 task = "workflow.run"
 args = "Quick Video Editor"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Web Test Server"
 
 [[workflows.workflow]]
 name = "Electron App"
@@ -46,4 +50,17 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "electron main.js --dev"
+args = "export DISPLAY=:99 && npx electron main.js --enable-logging --no-sandbox --disable-web-security"
+
+[[workflows.workflow]]
+name = "Web Test Server"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python3 -m http.server 5000"
+waitForPort = 5000
+
+[[ports]]
+localPort = 5000
+externalPort = 80
