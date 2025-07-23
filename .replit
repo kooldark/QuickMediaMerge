@@ -24,10 +24,6 @@ args = "electron_app"
 task = "workflow.run"
 args = "Quick Video Editor"
 
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "Video Editor"
-
 [[workflows.workflow]]
 name = "Electron App"
 author = "agent"
@@ -51,11 +47,3 @@ author = "agent"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "electron main.js --dev"
-
-[[workflows.workflow]]
-name = "Video Editor"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "DISPLAY=:99 xvfb-run -a electron main.js --dev"
